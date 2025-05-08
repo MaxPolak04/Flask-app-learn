@@ -7,8 +7,8 @@ __pycache__/
 # Virtual environments
 venv/
 env/
-.venv
-.env
+.venv/
+.env/
 
 # Configuration and dependencies
 *.egg-info/
