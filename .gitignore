@@ -1,1 +1,23 @@
+# Python-specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
 .venv
+.env
+
+# Configuration and dependencies
+*.egg-info/
+dist/
+build/
+
+# Editor and tool-specific files
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
