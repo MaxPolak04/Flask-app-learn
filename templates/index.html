@@ -1,1 +1,17 @@
-<h1>Home Page</h1>
+{% extends "base.html" %}
+
+
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1>Hello!</h1>
+<img src="{{ url_for('static', filename='images/main-img.png') }}" alt="Drzewko" class="main-img">
+<p>Welcome to the app, originally designed as a push-ups logger, but it's too boring...</p>
+
+{% endblock %}
