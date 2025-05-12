@@ -1,4 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, redirect
+from werkzeug.security import generate_password_hash
+from .models import User
+from . import db
 
 
 auth = Blueprint('auth', __name__)
@@ -15,7 +18,16 @@ def signup_post():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    print(name, email, password)
+    # print(name, email, password)
+
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        print('User already Exists!')
+
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2:sha256'))
+    db.session.add(new_user)
+    db.session.commit()
 
     return redirect(url_for('auth.login'))
 

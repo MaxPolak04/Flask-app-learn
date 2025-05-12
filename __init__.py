@@ -10,21 +10,22 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
-# basedir = os.path.abspath(os.path.dirname(__file__))
-
 
 def create_app():
     app = Flask(__name__)
 
+    basedir = os.path.abspath(os.path.dirname(__file__))
+
     app.config['SECRET_KEY'] = 'secret-key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///data/users.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "data", "users.db")}'
+
 
     db.init_app(app)
 
-    # with app.app_context():
-    #     print("Tworzę bazę danych...")
-    #     db.create_all()
-    #     print("Baza danych powinna być gotowa!")
+    from .models import User
+
+    with app.app_context():
+        db.create_all()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
