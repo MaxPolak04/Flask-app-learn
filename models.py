@@ -1,16 +1,20 @@
 from . import db
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from flask_login import UserMixin
+from datetime import datetime
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
+    workouts = db.relationship('Workout', backref='author', lazy=True)
 
-# class User(db.Model):
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     name: Mapped[str]
-#     email: Mapped[str] = mapped_column(unique=True)
-#     password: Mapped[str]
+
+class Workout(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    pushups = db.Column(db.Integer, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    comment = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
