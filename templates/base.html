@@ -29,12 +29,24 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="{{ url_for('main.index') }}">Home</a>
-                    <a class="nav-link" href="{{ url_for('main.new_workout') }}">Add New Workouts</a>
+                    <!-- <a class="nav-link" href="{{ url_for('main.new_workout') }}">Add New Workouts</a> -->
                     <a class="nav-link" href="{{ url_for('main.user_workouts') }}">All Workouts</a>
                     <a class="nav-link" href="{{ url_for('main.profile') }}">Account</a>
-                    <a class="nav-link" href="{{ url_for('auth.signup') }}">Sign up</a>
-                    <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                    <!-- <a class="nav-link" href="{{ url_for('auth.signup') }}">Sign up</a> -->
+                    <!-- <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a> -->
+                    <!-- <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a> -->
+                    <form class="form-inline my-2 my-lg-0">
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('main.new_workout') }}" class="btn btn-outline-primary" role="button">Add new Workout</a>
+                        {% endif %}
+                        {% if not current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.signup') }}" class="btn btn-outline-primary" role="button">Sign Up</a>
+                            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary" role="button" style="margin-left: 4px;">Login</a>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.logout') }}" class="btn btn-outlin-danger" role="button" style="margin-left: 4px;">Log out</a>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
         </div>

@@ -42,6 +42,30 @@ def new_workout_post():
 @main.route('/all')
 @login_required
 def user_workouts():
+    page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(email=current_user.email).first_or_404()
-    workouts = user.workouts
+    workouts = Workout.query.filter_by(author=user).paginate(page=page, per_page=3) # this is responsible for pagination
     return render_template('all-workouts.html', workouts=workouts, user=user)
+
+
+@main.route('/workout/<int:workout_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_workout(workout_id):
+    workout = Workout.query.get_or_404(workout_id)
+    if request.method == 'POST':
+        workout.pushups = request.form['pushups']
+        workout.comment = request.form['comment']
+        db.session.commit()
+        flash('Your workout has been updated!')
+        return redirect(url_for('main.user_workouts'))
+
+    return render_template('update-workout.html', workout=workout)
+
+
+@main.route('/workout/<int:workout_id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_workout(workout_id):
+    workout = Workout.query.get_or_404(workout_id)
+    db.session.delete(workout)
+    db.session.commit()
+    return redirect(url_for('main.user_workouts'))
